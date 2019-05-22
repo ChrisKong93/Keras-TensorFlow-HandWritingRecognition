@@ -1,0 +1,8 @@
+*.png
+*.spec
+*.bat
+__pycache__/
+build/
+dist/
+log
+T.py
