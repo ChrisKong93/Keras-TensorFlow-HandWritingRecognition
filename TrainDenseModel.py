@@ -1,3 +1,9 @@
+# Copyright: Copyright (c) 2019
+# Createdon: 2019年5月17日
+# Author: ChrisKong
+# Version: 1.0
+# Title: 一个Python程序
+
 import os
 
 from keras import Sequential
@@ -7,10 +13,8 @@ from keras.utils import np_utils
 
 
 def train():
-    LocalPath = os.getcwd()
-    (x_train, y_train), (x_test, y_test) = mnist.load_data(LocalPath + '/mnist/mnist.npz')
-    # print(x_train[0])
-    # exit()
+    localpath = os.getcwd()
+    (x_train, y_train), (x_test, y_test) = mnist.load_data(localpath + '/mnist/mnist.npz')
 
     # data pre-processing
     x_train = x_train.reshape(x_train.shape[0], -1) / 255.  # normalize
@@ -38,9 +42,9 @@ def train():
     print('accuracy', accuracy)
 
     # 保存模型
-    if not os.path.exists(LocalPath + '/model'):
-        os.mkdir(LocalPath + '/model')
-    model.save('./model/SequentialModel.h5')  # HDF5文件，pip install h5py
+    if not os.path.exists(localpath + '/model'):
+        os.mkdir(localpath + '/model')
+    model.save('./model/DenseModel.h5')  # HDF5文件，pip install h5py
 
 
 if __name__ == '__main__':

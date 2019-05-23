@@ -1,19 +1,24 @@
+# Copyright: Copyright (c) 2019
+# Createdon: 2019年5月17日
+# Author: ChrisKong
+# Version: 1.0
+# Title: 一个Python程序
+
 import os
 import time
 
+import numpy as np
 from PIL import Image
 from keras.datasets import mnist
 
 
 def get_test_image():
     localpath = os.getcwd()
-    filename = ''
     filepath = localpath + '/image/test/'
     if not os.path.exists(filepath):
         os.makedirs(filepath)
     (x_train, y_train), (x_test, y_test) = mnist.load_data(localpath + '/mnist/mnist.npz')
     im = np.ones((28, 28)) * 255
-    # print(im)
     for i in range(len(x_test)):
         img = Image.fromarray(im - x_test[i])
         # 模式
