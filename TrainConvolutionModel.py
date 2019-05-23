@@ -67,12 +67,12 @@ def train():
     y_test = np_utils.to_categorical(y_test, num_classes=10)
 
     model = buildmodel()  # 导入模型结构
-    
+
     model.compile(loss='categorical_crossentropy',
                   optimizer='adam',
                   metrics=['accuracy'])
 
-    model.fit(x_train, y_train, epochs=2, batch_size=32)
+    model.fit(x_train, y_train, epochs=5, batch_size=32)
 
     # 评估模型
     loss, accuracy = model.evaluate(x_test, y_test)
