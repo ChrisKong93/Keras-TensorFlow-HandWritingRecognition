@@ -35,7 +35,7 @@ def get_test_image():
         filename = str(y_test[i]) + '_' + str(int(round(time.time() * 1000)))
         print(filename)
         img.save(filepath + filename + '.png')
-        time.sleep(0.1)
+        # time.sleep(0.1)
     print('Finished')
 
 
