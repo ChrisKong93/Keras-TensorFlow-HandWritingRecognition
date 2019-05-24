@@ -85,13 +85,15 @@ class MyFrame(wx.Frame):
         [check, name] = checkimage(path)
         # print(check, name)
         if check == 0:
-            print('这个文件不存在')
-            logging.warning('这个文件不存在')
-            self.m_staticText1.SetLabel('这个文件不存在')
+            log = '这个文件不存在'
+            print(log)
+            logging.warning(log)
+            self.m_staticText1.SetLabel(log)
         elif check == 2:
-            print('不是图片文件，请重试')
-            logging.warning('不是图片文件，请重试')
-            self.m_staticText1.SetLabel('不是图片文件，请重试')
+            log = '不是图片文件，请重试'
+            print(log)
+            logging.warning(log)
+            self.m_staticText1.SetLabel(log)
         else:
             self.m_staticText1.SetLabel(str(predict(ImagePath + name)))
         event.Skip()
@@ -130,9 +132,10 @@ def predict(path=None):
     localpath = os.getcwd()
     modelpath = localpath + '/model/SimpleRNNModel.h5'
     if not os.path.exists(modelpath):
-        print('模型文件不存在，请检查' + modelpath + '是否存在！')
-        logging.warning('模型文件不存在，请检查' + modelpath + '是否存在！')
-        return '模型文件不存在，请检查' + modelpath + '是否存在！'
+        log = '模型文件不存在，请检查' + modelpath + '是否存在！'
+        print(log)
+        logging.warning(log)
+        return log
     model = load_model(modelpath)
     im = Image.open(path)
     im.show()
