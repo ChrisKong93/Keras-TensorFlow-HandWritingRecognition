@@ -56,9 +56,9 @@ localpath = os.getcwd() # 获取当前路径
 
 这样我们的数据就准备好了
 
-## 数据预处理
+## 全连接模型
 
-然后，我们需要对数据进行预处理
+首先，我们需要对数据进行预处理
 
 ```python
 # data pre-processing
@@ -67,8 +67,6 @@ x_test = x_test.reshape(x_test.shape[0], -1) / 255.  # 归一化
 y_train = np_utils.to_categorical(y_train, num_classes=10)
 y_test = np_utils.to_categorical(y_test, num_classes=10)
 ```
-
-## 全连接模型
 
 数据预处理完以后我们就可以搭建网络结构了
 
@@ -131,5 +129,96 @@ if not os.path.exists(localpath + '/model'):
 ```
 
 这样我们的dense模型就训练好了
+
+## CNN模型
+
+同样我们先进行数据预处理
+
+```python
+x_train = x_train.reshape(-1, 1, 28, 28) / 255.
+x_test = x_test.reshape(-1, 1, 28, 28) / 255.  # normalize
+y_train = np_utils.to_categorical(y_train, num_classes=10)
+y_test = np_utils.to_categorical(y_test, num_classes=10)
+```
+
+然后就可以搭建模型了
+
+``` python
+model = Sequential()
+# 第一层
+model.add(Convolution2D(
+    batch_input_shape=(32, 1, 28, 28),
+    filters=32,
+    kernel_size=5,
+    strides=1,
+    padding='same',  # Padding method
+    data_format='channels_first',
+))
+# 激活层
+model.add(Activation('relu'))
+# 池化
+model.add(MaxPooling2D(
+    pool_size=2,
+    strides=2,
+    padding='same',  # Padding method
+    data_format='channels_first',
+))
+# 第二层
+model.add(Convolution2D(
+    filters=64,
+    kernel_size=5,
+    strides=1,
+    padding='same',  # Padding method
+    data_format='channels_first',
+))
+# 激活层
+model.add(Activation('relu'))
+# 池化
+model.add(MaxPooling2D(
+    pool_size=2,
+    strides=2,
+    padding='same',  # Padding method
+    data_format='channels_first',
+))
+# Flatten()把多维的输入一维化，常用在从卷积层到全连接层的过渡
+model.add(Flatten())
+# 全连接层
+model.add(Dense(1024))
+model.add(Dense(10))
+model.add(Activation('softmax'))
+```
+
+模型设置好以后，编译模型
+
+``` python
+model.compile(loss='categorical_crossentropy',
+              optimizer='adam',
+              metrics=['accuracy'])
+```
+
+训练模型
+
+``` python
+model.fit(x_train, y_train, epochs=5, batch_size=32)
+```
+
+评估模型
+
+```python
+loss, accuracy = model.evaluate(x_test, y_test)
+print('test loss', loss)
+print('accuracy', accuracy)
+```
+
+最后保存模型
+
+```python
+# 保存模型
+if not os.path.exists(localpath + '/model'):
+    os.mkdir(localpath + '/model')
+model.save('./model/ConvolutionModel.h5')  # HDF5文件，pip install h5py
+```
+
+这样我们的CNN模型就训练好了
 
 ## 待续未完
