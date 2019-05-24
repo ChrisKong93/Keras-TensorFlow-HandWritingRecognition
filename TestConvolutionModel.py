@@ -19,8 +19,8 @@ def run():
     # data pre-processing
 
     x_test = x_test.reshape(-1, 1, 28, 28) / 255.  # normalize
-    print(x_test.shape)
-    print(x_test[0].reshape(1, - 1, 28, 28).shape)
+    # print(x_test.shape)
+    # print(x_test[0].reshape(1, - 1, 28, 28).shape)
     img = x_test
     predict = model.predict_classes(img)
     print(predict)
