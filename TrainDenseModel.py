@@ -33,7 +33,7 @@ def train():
                   optimizer='adam',
                   metrics=['accuracy'])
 
-    model.fit(x_train, y_train, epochs=100, batch_size=128)
+    model.fit(x=x_train, y=y_train, epochs=100, batch_size=128)
 
     # 评估模型
     loss, accuracy = model.evaluate(x_test, y_test)

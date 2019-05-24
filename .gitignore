@@ -5,7 +5,8 @@ __pycache__/
 build/
 dist/
 log
-T.py
+A.py
+B.py
 Demo-2019-5-17.py
 node_modules/
 directoryList.md
