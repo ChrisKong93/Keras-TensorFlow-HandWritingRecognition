@@ -10,15 +10,15 @@
 git clone git@github.com:ChrisKong93/Keras-TensorFlow-HandWritingRecognition.git
 ```
 
-安装项目所用的依赖包
+安装项目所用的依赖包\*
 
 ```shell
 pip install -r requirements.txt
 ```
 
-之后就可以运行程序了
+之后就可以运行程序了*
 
-\* Linux下在安装wxpython依赖包的时候失败了，需要去网上找wxpython相应的whl文件来安装
+\* Linux下在安装wxpython依赖包的时候失败了，需要去网上找wxpython相应的whl文件手动安装
 
 \* 在运行GUI版本的程序之前，需要先运行MNISTtoPNG.py文件生成png图片
 
