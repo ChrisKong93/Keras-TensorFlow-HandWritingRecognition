@@ -2,15 +2,25 @@
 
 通过Keras训练一个手写数字识别的模型，Keras后端为TensorFlow。
 
-本项目的所有程序都可以直接运行
+项目需要环境
 
-首先clone项目到本地
+```markdown
+python3.6
 
-```shell
-git clone git@github.com:ChrisKong93/Keras-TensorFlow-HandWritingRecognition.git
+Tensorflow
+
+Keras
+
+cuda10.1
 ```
 
-安装项目所用的包\*
+\*建议使用*Anaconda*安装python相关环境，项目IDE推荐使用pycharm
+
+\*Tensorflow GPU版本相关教程可以参考https://blog.csdn.net/weixin_39290638/article/details/80045236 
+
+本项目的所有程序都可以直接运行
+
+安装项目所用的包
 
 ```shell
 pip install -r requirements.txt
@@ -20,7 +30,7 @@ pip install -r requirements.txt
 
 \* Linux下在安装wxpython的时候失败了，需要去网上找wxpython相应的whl文件手动安装
 
-\* 在运行GUI版本的程序之前，需要先运行MNISTtoPNG.py文件生成png图片
+\* 在运行GUI版本的程序之前，需要先运行MNISTtoPNG.py文件生成用于测试的png图片
 
 文件结构说明如下
 
@@ -33,15 +43,12 @@ pip install -r requirements.txt
     |-- TestConvolutionModelGUI.py 测试Convolution模型(GUI版本)
     |-- TestDenseModel.py 测试Dense模型
     |-- TestDenseModelGUI.py 测试Dense模型(GUI版本)
-    |-- TestSimpleRNNModel.py 测试SimpleRNN模型
-    |-- TestSimpleRNNModelGUI.py 测试SimpleRNN模型(GUI版本)
     |-- TrainConvolutionModel.py 训练自己的Convolution模型
     |-- TrainDenseModel.py 训练自己的Dense模型
-    |-- TrainSimpleRNNModel.py 训练自己的SimpleRNN模型
     |-- mnist 文件夹里是下载好的mnist数据
         |-- mnist.npz
 ```
-项目中有三个模型，一个全连接训练出来的，一个CNN训练出来的，一个RNN训练出来的模型
+项目中有两个模型，一个全连接训练出来的，一个CNN训练出来的
 
 ## MNIST简介
 
@@ -241,63 +248,6 @@ model.save('./model/ConvolutionModel.h5')  # HDF5文件，pip install h5py
 
 这样我们的CNN模型就训练好了
 
-## RNN模型
 
-数据预处理
 
-```python
-# data pre-processing
-x_train = x_train.reshape(-1, 28, 28) / 255.
-x_test = x_test.reshape(-1, 28, 28) / 255.  # normalize
-y_train = np_utils.to_categorical(y_train, num_classes=10)
-y_test = np_utils.to_categorical(y_test, num_classes=10)
-```
-
-搭建模型
-
-```python
-TIME_STEPS = 28
-INPUT_SIZE = 28
-OUTPUT_SIZE = 10
-CELL_SIZE = 50
-LR = 0.001
-model = Sequential()
-model.add(SimpleRNN(
-    # for batch_input_shape, if using tensorflow as the backend, we have to put None for the batch_size.
-    # Otherwise, model.evaluate() will get error.
-    batch_input_shape=(None, TIME_STEPS, INPUT_SIZE),
-    output_dim=CELL_SIZE,
-    unroll=True,
-))
-model.add(Dense(OUTPUT_SIZE))
-model.add(Activation('softmax'))
-
-adam = Adam(LR)
-model.compile(optimizer=adam,
-              loss='categorical_crossentropy',
-              metrics=['accuracy'])
-```
-
-训练模型并保存
-
-```python
-while True:
-    # data shape = (batch_num, steps, inputs/outputs)
-    x_batch = x_train[BATCH_INDEX: BATCH_INDEX + BATCH_SIZE, :, :]
-    y_batch = y_train[BATCH_INDEX: BATCH_INDEX + BATCH_SIZE, :]
-    cost = model.train_on_batch(x_batch, y_batch)
-    BATCH_INDEX += BATCH_SIZE
-    BATCH_INDEX = 0 if BATCH_INDEX >= x_train.shape[0] else BATCH_INDEX
-    if step % 500 == 0:
-        # cost, accuracy = model.evaluate(x_test, y_test, batch_size=y_test.shape[0], verbose=False)
-        cost, accuracy = model.evaluate(x_train, y_train, batch_size=y_test.shape[0], verbose=False)
-        print('step ' + str(step) + ',train cost is ', cost, ',train accuracy is ', accuracy)
-        if accuracy > 0.95:
-            testcost, testaccuracy = model.evaluate(x_test, y_test, batch_size=y_test.shape[0], verbose=False)
-            print('step ' + str(step) + ',test cost is ', testcost, ',test accuracy is ', testaccuracy)
-            model.save('./model/SimpleRNNModel.h5')  # HDF5文件，pip install h5py
-            break
-            step += 1
-```
-
-RNN模型就训练好了
+然后使用运行相关的Test程序进行预测评估
