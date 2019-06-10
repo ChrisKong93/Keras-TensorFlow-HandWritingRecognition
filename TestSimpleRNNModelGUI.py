@@ -8,12 +8,12 @@
 ###########################################################################
 import logging
 import os
+import random
 import time
 
 import numpy as np
 import wx
 import wx.xrc
-
 ###########################################################################
 ## Class MyFrame
 ###########################################################################
@@ -37,7 +37,18 @@ class MyFrame(wx.Frame):
 
         gSizer1 = wx.GridSizer(0, 2, 0, 0)
 
-        self.m_textCtrl1 = wx.TextCtrl(self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size(380, -1), 0)
+        self.localpath = os.getcwd() + '/image/test'
+        if not os.path.exists(self.localpath):
+            print('没有找到图片路径，请先运行MNISTtoPNG.py程序')
+            self.m_textCtrl1 = wx.TextCtrl(self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size(380, -1), 0)
+        else:
+            for root, dirs, files in os.walk(self.localpath):
+                pass
+            L = len(files)
+            i = random.randint(0, L)
+            # print(files[i])
+            randompath = self.localpath + '/' + files[i]
+            self.m_textCtrl1 = wx.TextCtrl(self, wx.ID_ANY, randompath, wx.DefaultPosition, wx.Size(380, -1), 0)
         gSizer1.Add(self.m_textCtrl1, 0, wx.ALIGN_LEFT | wx.ALL, 5)
 
         gSizer2 = wx.GridSizer(0, 2, 0, 0)
