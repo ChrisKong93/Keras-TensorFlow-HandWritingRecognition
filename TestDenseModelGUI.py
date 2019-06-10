@@ -8,12 +8,12 @@
 ###########################################################################
 import logging
 import os
+import random
 import time
 
 import numpy as np
 import wx
 import wx.xrc
-
 ###########################################################################
 ## Class MyFrame
 ###########################################################################
@@ -23,6 +23,10 @@ from keras.engine.saving import load_model
 ImagePath = os.getcwd() + '/image/predict/'
 if not os.path.exists(ImagePath):
     os.makedirs(ImagePath)
+
+
+# os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
+# os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 
 
 class MyFrame(wx.Frame):
@@ -37,7 +41,18 @@ class MyFrame(wx.Frame):
 
         gSizer1 = wx.GridSizer(0, 2, 0, 0)
 
-        self.m_textCtrl1 = wx.TextCtrl(self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size(380, -1), 0)
+        self.localpath = os.getcwd() + '/image/test'
+        if not os.path.exists(self.localpath):
+            print('没有找到图片路径，请先运行MNISTtoPNG.py程序')
+            self.m_textCtrl1 = wx.TextCtrl(self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size(380, -1), 0)
+        else:
+            for root, dirs, files in os.walk(self.localpath):
+                pass
+            L = len(files)
+            i = random.randint(0, L)
+            # print(files[i])
+            randompath = self.localpath + '/' + files[i]
+            self.m_textCtrl1 = wx.TextCtrl(self, wx.ID_ANY, randompath, wx.DefaultPosition, wx.Size(380, -1), 0)
         gSizer1.Add(self.m_textCtrl1, 0, wx.ALIGN_LEFT | wx.ALL, 5)
 
         gSizer2 = wx.GridSizer(0, 2, 0, 0)
@@ -148,8 +163,11 @@ def predict(path=None):
     # print(img.shap)
     # img = x_test[0].reshape(1, -1)
     # print(img)
+    # predict = model.predict(img)
     predict = model.predict_classes(img)
     print(predict[0])
+    # print(np.argmax(predict, axis=1)[0])
+    # exit()
     logging.info('预测结果为:' + str(predict[0]))
     return predict[0]
 
