@@ -12,3 +12,4 @@ node_modules/
 directoryList.md
 package-lock.json
 image/
+.idea/
